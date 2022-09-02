@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const ProductTitle = styled.p`
   font-weight: 800;
@@ -86,7 +87,7 @@ const IndexPage = ({ data: { products } }) => {
               {product.description}
             </ProductDescription>
             <Price key={product.price}>$ {product.price}</Price>
-            {/* <Image images={product.image} /> */}
+            <GatsbyImage image={getImage(product.image)} alt={product.name} />
           </CardWrapper>
         ))}
       </Grid>
@@ -101,6 +102,15 @@ export const query = graphql`
         name
         description
         price
+        image {
+          childImageSharp {
+            gatsbyImageData(
+              width: 200
+              placeholder: BLURRED
+              formats: [AUTO, WEBP, AVIF]
+            )
+          }
+        }
       }
     }
   }
